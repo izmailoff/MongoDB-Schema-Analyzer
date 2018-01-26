@@ -1,7 +1,9 @@
 package me.izmailoff
 
+import com.mongodb.DBObject
 import net.liftweb.json._
 import wws.db.connection.MongoConfig
+
 import scala.util.Try
 import scala.util.Success
 import scala.util.Failure
@@ -25,6 +27,7 @@ object MongoSchemaAnalyzer extends App {
    */
   val defaults: PartialFunction[JValue, JValue] = {
     case JInt(_) => JInt(0)
+    case blob@JString("<Binary Data>") => blob
     case JString(_) => JString("...")
     case JDouble(_) => JDouble(0)
     case JBool(_) => JBool(true)
@@ -36,14 +39,23 @@ object MongoSchemaAnalyzer extends App {
    */
   val printTransform: PartialFunction[JValue, JValue] = {
     case JInt(_) => JString("Integer")
+    case blob@JString("<Binary Data>") => blob
     case JString(_) => JString("String")
     case JDouble(_) => JString("Double")
     case JBool(_) => JString("Boolean")
   }
 
+  /**
+    * A workaround to handle binary data fields such as file chunks which break proper JSON representation.
+    * Better options are possible such as converting from DBObject to JSON directly without string replace.
+    * @param doc
+    * @return
+    */
+  def toJsonStr(doc: DBObject) = doc.toString.replace("<Binary Data>","\"<Binary Data>\"")
+
   MongoConfig.init()
   val collection = MongoConfig.getCollection(collectionName)
   val cursor = collection.find()
-  val uniqueASTs = cursor.iterator.asScala.collect { case doc => parse(doc.toString).transform(defaults) }.toSet
+  val uniqueASTs = cursor.iterator.asScala.collect { case doc: DBObject => parse(toJsonStr(doc)).transform(defaults) }.toSet
   uniqueASTs foreach { doc => println(prettyRender(doc.transform(printTransform))) }
 }

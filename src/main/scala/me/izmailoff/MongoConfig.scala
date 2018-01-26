@@ -1,6 +1,9 @@
 package wws.db.connection
 
+import java.io.FileInputStream
+
 import com.mongodb.{MongoClient, MongoException, ServerAddress}
+import net.liftweb.common.Full
 import net.liftweb.mongodb._
 import net.liftweb.util.{DefaultConnectionIdentifier, Props}
 
@@ -8,6 +11,8 @@ import net.liftweb.util.{DefaultConnectionIdentifier, Props}
  * MongoDb connection provider.
  */
 object MongoConfig {
+  val filename = "default.props"
+  Props.whereToLook = () => ((filename, () => Full(new FileInputStream(filename))) :: Nil)
 
   val hostname = Props.get("mongo.host", "127.0.0.1")
   val port = Props.getInt("mongo.port", 27017)

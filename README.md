@@ -75,7 +75,8 @@ Afterwards run it like a regular jar (default main class will be set):
 
     java -jar target/scala-2.12/mongodbschema_2.12-0.0.3-one-jar.jar <collection name>
 
-Connection properties can be set in default.props.
+Connection properties can be set in default.props. To change connection settings at runtime
+ add `default.props` file to your current directory similar to one found in `src/main/resources/props`.
 
 Tests and Examples
 ====================
@@ -151,4 +152,15 @@ Now if we run the tool we get the following output:
 
 These are all unique ASTs/document schemas that the tool found.
 
+Another example of running this tool on `fs.chunks` (GridFS) - binary data:
 
+    {
+      "_id":{
+        "$oid":"String"
+      },
+      "files_id":{
+        "$oid":"String"
+      },
+      "n":"Integer",
+      "data":"<Binary Data>"
+    }
