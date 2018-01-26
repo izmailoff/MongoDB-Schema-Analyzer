@@ -5,7 +5,7 @@ import wws.db.connection.MongoConfig
 import scala.util.Try
 import scala.util.Success
 import scala.util.Failure
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 object MongoSchemaAnalyzer extends App {
 
@@ -44,6 +44,6 @@ object MongoSchemaAnalyzer extends App {
   MongoConfig.init()
   val collection = MongoConfig.getCollection(collectionName)
   val cursor = collection.find()
-  val uniqueASTs = cursor.iterator.collect { case doc => parse(doc.toString).transform(defaults) }.toSet
-  uniqueASTs foreach { doc => println(pretty(render(doc.transform(printTransform)))) }
+  val uniqueASTs = cursor.iterator.asScala.collect { case doc => parse(doc.toString).transform(defaults) }.toSet
+  uniqueASTs foreach { doc => println(prettyRender(doc.transform(printTransform))) }
 }

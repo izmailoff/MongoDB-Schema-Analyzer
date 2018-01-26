@@ -25,7 +25,7 @@ Requires mongod server process running on:
     localhost:27017
 
 Tests can be run without MongoDB server.
-All Scala dependencies (jars) will be downloaded by SBT.
+All Scala dependencies (JARs) will be downloaded by SBT.
 
 MongoDB Installation Instructions
 ====================
@@ -49,51 +49,33 @@ How To Run Applications
 
 SBT
 -------------
-Go to project directory and type 'sbt' or './sbt' (sbt executable is provided).
-After this you can issue commands in SBT prompt:
+Go to the project root directory.
+
+Download SBT runner by running:
+
+    ./get_sbt.sh
+
+Now type `./sbt`. After this you can issue commands in SBT prompt:
 
     ; clean; compile; test; run
 
 Alternatively you can type in shell:
 
-    sbt update clean compile test run
+    ./sbt update clean compile test run
 
-The easiest way to run apps is to type 'run' in SBT and select app number from the list.
+The easiest way to run apps is to type `run` in SBT and select app number from the list.
 
 JAR
 -------------
 Generate a jar that contains all dependencies with SBT command:
 
-    one-jar
+    oneJar
 
 Afterwards run it like a regular jar (default main class will be set):
 
-    java -jar <jar-file.jar> <collection name>
+    java -jar target/scala-2.12/mongodbschema_2.12-0.0.3-one-jar.jar <collection name>
 
 Connection properties can be set in default.props.
-
-IDEs
--------------
-### Eclipse
-A project can be generated with:
-
-    sbt eclipse
-    
-Use 'Import New Projects' in eclipse to open it.
-
-### IntelliJ IDEA
-You can generate a project by running this SBT command:
-
-    sbt gen-idea
-    
-Some available options are:
-
-    no-classifiers
-    no-sbt-classifiers
-
-Contributions
-====================
-Contributions and contributors are welcome :).
 
 Tests and Examples
 ====================
@@ -167,5 +149,6 @@ Now if we run the tool we get the following output:
       "tags":["Double"]
     }
 
-So our tool found only 2 different ASTs/document schemas.
+These are all unique ASTs/document schemas that the tool found.
+
 

@@ -1,11 +1,8 @@
 package wws.db.connection
 
-import net.liftweb._
-import net.liftweb.common._
+import com.mongodb.{MongoClient, MongoException, ServerAddress}
 import net.liftweb.mongodb._
-import net.liftweb.util.Props
-import com.mongodb.{ ServerAddress, Mongo }
-import com.mongodb.MongoException
+import net.liftweb.util.{DefaultConnectionIdentifier, Props}
 
 /**
  * MongoDb connection provider.
@@ -21,27 +18,27 @@ object MongoConfig {
    */
   def init() {
     val server = new ServerAddress(hostname, port)
-    MongoDB.defineDb(DefaultMongoIdentifier, new Mongo(server), dbName)
+    MongoDB.defineDb(DefaultConnectionIdentifier, new MongoClient(server), dbName)
   }
 
   /**
    * Checks if there is connectivity to MongoDB server by
-   * checking default DB connection and calling getLastError.
+   * checking default DB connection and calling some db command.
    */
   def isConnected = {
-    val db = MongoDB.getDb(DefaultMongoIdentifier)
+    val db = MongoDB.getDb(DefaultConnectionIdentifier)
     if (db.isEmpty)
       false
     else
       try {
-        db.get.getLastError
+        db.get.getStats()
         true
       } catch {
-        case t: MongoException => false
+        case _: MongoException => false
       }
   }
   
-  def getDb = MongoDB.getDb(DefaultMongoIdentifier)
+  def getDb = MongoDB.getDb(DefaultConnectionIdentifier)
   
   def getCollection(name: String) = getDb.get.getCollection(name)
 }

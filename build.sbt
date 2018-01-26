@@ -1,28 +1,26 @@
 name := "MongoDbSchema"
 
-version := "0.0.2"
+version := "0.0.3"
 
-scalaVersion := "2.10.1"
+scalaVersion := "2.12.4"
 
 scalacOptions ++= Seq("-deprecation")
 
-EclipseKeys.withSource := true
-
 com.github.retronym.SbtOneJar.oneJarSettings
 
-resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
+resolvers ++= Seq(//"snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases"      at "http://oss.sonatype.org/content/repositories/releases")
 
 libraryDependencies ++= {
-  val liftVersion = "2.5-M4"
+  val liftVersion = "3.2.0-M2"
   Seq(
     "net.liftweb" %% "lift-mongodb-record" % liftVersion,
     "net.liftweb" %% "lift-json" % liftVersion,
-    "org.scalatest" %% "scalatest" % "2.0.M6-SNAP5" % "test",
-    "org.specs2"        %% "specs2"             % "1.14"           % "test",
-    "junit" % "junit" % "4.11" % "test",
+    "org.scalatest" %% "scalatest" % "3.0.4" % Test,
+    "org.specs2" %% "specs2-core" % "4.0.1" % Test,
+    "junit" % "junit" % "4.12" % "test",
 //    "org.mongodb" %% "casbah" % "2.5.0",
-    "ch.qos.logback" % "logback-classic" % "1.0.9"
+    "ch.qos.logback" % "logback-classic" % "1.2.3"
 //    "org.mongeez" % "mongeez" % "0.9.2",
 //    "org.springframework" % "spring-core" % "3.2.1.RELEASE",
 //    "log4j" % "log4j" % "1.2.17",
