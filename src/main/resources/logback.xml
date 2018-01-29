@@ -12,7 +12,7 @@
         </encoder>
     </appender>
 
-    <!--<logger name="net.liftweb" level="info" />-->
+    <logger name="org.mongodb" level="error" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />
